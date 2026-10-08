@@ -106,7 +106,8 @@ const metadata = {
   fullyQualifiedCount: all.length, baseCount: entries.length, variantCount: parent.size,
   koreanNameCount: all.filter((e) => e.koName).length,
   koreanMetadataCount: all.filter((e) => e.koName || e.keywords.length).length,
-  hashes: Object.fromEntries(files.map((f) => [f, createHash('sha256').update(read(`scripts/data-sources/${f}`)).digest('hex')])),
+  // Git의 LF/CRLF 체크아웃 차이와 무관하게 원본 텍스트를 검증합니다.
+  hashes: Object.fromEntries(files.map((f) => [f, createHash('sha256').update(read(`scripts/data-sources/${f}`).replace(/\r\n/g, '\n')).digest('hex')])),
 };
 mkdirSync(new URL('src/data/emoji/', root), { recursive: true });
 writeFileSync(new URL('src/data/emoji/generated.json', root), `${JSON.stringify({ metadata, categories: Object.entries(groups).map(([id, label]) => ({ id, label })), entries })}\n`);

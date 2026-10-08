@@ -8,6 +8,7 @@
 
 원본 파일은 `scripts/data-sources/`에 보관합니다. `npm run generate:emoji`로 네트워크 없이
 `generated.json`을 재생성합니다. 결과 메타데이터에 버전, 원본 URL, SHA-256 및 커버리지를 기록합니다.
+SHA-256은 LF로 줄바꿈을 정규화한 UTF-8 텍스트 기준으로 계산해 Windows와 Linux에서 일치합니다.
 새 버전으로 변경할 때는 원본, 생성 스크립트, 출처 문서, 화면 안내와 테스트를 함께 갱신하세요.
 
 `fully-qualified`만 수록합니다. 구성 요소 단독, minimally-qualified와 unqualified 중복 표현은 제외합니다.

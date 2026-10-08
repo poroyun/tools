@@ -47,7 +47,7 @@ test('모든 fully-qualified 원본을 중복 없이 보존하고 변형에 실�
   assert.equal(data.entries.filter((e) => /[\u{1F3FB}-\u{1F3FF}]/u.test(e.char)).length, 0);
   for (const [file, hash] of Object.entries(data.metadata.hashes)) {
     const contents = readFileSync(new URL(`../scripts/data-sources/${file}`, import.meta.url), 'utf8');
-    assert.equal(createHash('sha256').update(contents).digest('hex'), hash);
+    assert.equal(createHash('sha256').update(contents.replace(/\r\n/g, '\n')).digest('hex'), hash);
   }
 });
 
