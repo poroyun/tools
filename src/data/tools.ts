@@ -6,7 +6,7 @@ export const tools = [
     description: '이모지와 이모티콘을 검색하고 간편하게 복사하세요.',
     href: '/characters/',
     icon: '☺',
-    status: 'coming-soon',
+    status: 'available',
   },
   {
     title: '색상표',
