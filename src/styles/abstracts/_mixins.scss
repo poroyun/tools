@@ -1,0 +1,19 @@
+@use 'variables' as vars;
+
+// 기본 스타일은 모바일에 적용하고 넓은 화면에서 필요한 값만 확장합니다.
+@mixin from($min-width) {
+  @media (min-width: $min-width) {
+    @content;
+  }
+}
+
+@mixin container {
+  width: 100%;
+  max-width: vars.$content-max-width;
+  margin-inline: auto;
+  padding-inline: vars.$space-sm;
+
+  @include from(vars.$breakpoint-tablet) {
+    padding-inline: vars.$space-lg;
+  }
+}

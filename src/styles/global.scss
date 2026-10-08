@@ -1,0 +1,68 @@
+@use 'abstracts/variables' as vars;
+@use 'abstracts/mixins';
+@use 'base/reset';
+@use 'base/typography';
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: vars.$color-background;
+  color: vars.$color-text;
+}
+
+:focus-visible {
+  outline: 2px solid vars.$color-accent;
+  outline-offset: 3px;
+}
+
+.container {
+  @include mixins.container;
+}
+
+.site-header {
+  padding-block: vars.$space-md;
+  border-bottom: 1px solid vars.$color-border;
+
+  .brand {
+    color: vars.$color-accent;
+    font-size: vars.$font-size-brand;
+    font-weight: vars.$font-weight-bold;
+    text-decoration: none;
+  }
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: vars.$space-sm vars.$space-lg;
+}
+
+.site-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.site-footer {
+  padding-block: vars.$space-md;
+  border-top: 1px solid vars.$color-border;
+
+  p {
+    margin: 0;
+  }
+}
+
+.home {
+  padding-block: clamp(vars.$space-xl, 10vw, vars.$space-2xl);
+
+  h1 {
+    margin: 0;
+    font-size: clamp(vars.$font-size-heading-min, 8vw, vars.$font-size-heading-max);
+  }
+
+  .eyebrow {
+    color: vars.$color-accent;
+    font-weight: vars.$font-weight-semibold;
+  }
+}
