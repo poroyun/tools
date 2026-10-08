@@ -61,8 +61,95 @@ body {
     font-size: clamp(vars.$font-size-heading-min, 8vw, vars.$font-size-heading-max);
   }
 
-  .eyebrow {
-    color: vars.$color-accent;
-    font-weight: vars.$font-weight-semibold;
+}
+
+.hero {
+  margin-bottom: vars.$space-xl;
+
+  p {
+    margin: vars.$space-lg 0 0;
+  }
+}
+
+.tools-section h2 {
+  margin: 0 0 vars.$space-lg;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: vars.$space-lg;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    min-width: 0;
+  }
+
+  @include mixins.from(vars.$breakpoint-tablet) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include mixins.from(vars.$breakpoint-desktop) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.tool-card {
+  height: 100%;
+  background: vars.$color-surface;
+  border: 1px solid vars.$color-border;
+  border-radius: 0.75rem;
+}
+
+.tool-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  padding: vars.$space-lg;
+  color: inherit;
+  text-decoration: none;
+  border-radius: inherit;
+}
+
+a.tool-card__content:hover {
+  background: vars.$color-background;
+}
+
+.tool-card__icon {
+  color: vars.$color-accent;
+  font-size: vars.$font-size-brand;
+  font-weight: vars.$font-weight-bold;
+  margin-bottom: vars.$space-sm;
+}
+
+.tool-card__title {
+  margin: 0 0 vars.$space-sm;
+  font-size: vars.$font-size-brand;
+}
+
+.tool-card__description {
+  margin: 0 0 vars.$space-lg;
+}
+
+.tool-card__status {
+  margin-top: auto;
+  padding: 0.25rem 0.75rem;
+  background: vars.$color-background;
+  border: 1px solid vars.$color-border;
+  border-radius: 999px;
+  font-size: 0.875rem;
+}
+
+// 현재 애니메이션은 없으며, 향후 추가되어도 사용자 설정을 존중합니다.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
   }
 }

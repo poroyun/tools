@@ -1,11 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolCard from '../components/ToolCard.astro';
+import { tools } from '../data/tools';
 ---
 
-<BaseLayout title="Tools" description="일상에 필요한 무료 웹 도구를 제공하는 Tools입니다.">
+<BaseLayout
+  title="Tools - 무료 웹 도구 모음"
+  description="특수문자, 색상표, HTML 코드 등 작업에 필요한 무료 웹 도구를 한곳에서 이용하세요."
+>
   <div class="container home">
-    <p class="eyebrow">일상에 필요한 웹 도구</p>
-    <h1>Tools</h1>
-    <p>간편하게 사용할 수 있는 웹 도구를 준비하고 있습니다.</p>
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">필요한 도구를 한곳에</h1>
+      <p>작업할 때 자주 쓰는 도구를 쉽고 빠르게 이용하세요.</p>
+    </section>
+    <section class="tools-section" aria-labelledby="tools-title">
+      <h2 id="tools-title">도구 모음</h2>
+      <ul class="tools-grid">
+        {tools.map((tool) => <li><ToolCard {...tool} /></li>)}
+      </ul>
+    </section>
   </div>
 </BaseLayout>

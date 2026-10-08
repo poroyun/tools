@@ -1,0 +1,28 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  href?: string;
+  icon?: string;
+  status: 'available' | 'coming-soon';
+}
+
+const { title, description, href, icon, status } = Astro.props;
+// 사이트 내부의 루트 상대 경로만 허용합니다.
+const validHref = typeof href === 'string'
+  && /^\/(?!\/)[^\s\\]*$/.test(href);
+const isLinked = status === 'available' && validHref;
+const destination = isLinked
+  ? `${import.meta.env.BASE_URL.replace(/\/$/, '')}${href}`
+  : undefined;
+const Card = isLinked ? 'a' : 'div';
+---
+
+<article class="tool-card" data-status={status}>
+  <Card class="tool-card__content" href={destination}>
+    {icon && <span class="tool-card__icon" aria-hidden="true">{icon}</span>}
+    <h3 class="tool-card__title">{title}</h3>
+    <p class="tool-card__description">{description}</p>
+    <span class="tool-card__status">{status === 'coming-soon' ? '준비 중' : '이용 가능'}</span>
+  </Card>
+</article>
