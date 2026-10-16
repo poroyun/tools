@@ -18,8 +18,8 @@ export const tools = [
   {
     title: 'HTML 코드표',
     description: 'HTML 특수문자와 엔티티 코드를 찾아보세요.',
-    href: '/html-entities/',
+    href: '/entities/',
     icon: '</>',
-    status: 'coming-soon',
+    status: 'available',
   },
 ] satisfies Tool[];

@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntityBrowser from '../../components/entities/EntityBrowser.astro';
+import '../../styles/entities.scss';
+---
+
+<BaseLayout
+  title="HTML 엔티티 코드표 - 특수문자 검색 및 복사 | Tools"
+  description="HTML 특수문자와 엔티티를 한글·영문 이름으로 검색하고 Named Entity, Decimal, Hex 코드를 간편하게 복사하세요."
+>
+  <div class="container entities-page">
+    <header class="entities-intro">
+      <h1>HTML 엔티티 코드표</h1>
+      <p>HTML에서 사용하는 특수문자를 찾고 Named Entity·Decimal·Hex 코드를 복사하세요.</p>
+    </header>
+    <EntityBrowser />
+    <section class="entities-help" aria-labelledby="entity-help-title">
+      <h2 id="entity-help-title">사용 방법</h2>
+      <ol>
+        <li>문자, 한글·영문 이름 또는 엔티티 코드를 검색하세요. 예: 저작권, 하트, ampersand.</li>
+        <li>Named Entity, Decimal, Hex 중 필요한 코드 버튼을 누르세요. 문자 대신 코드 문자열이 복사됩니다.</li>
+        <li>같은 문자에 이름이 여러 개면 모든 별칭을 표시합니다. 이름의 대소문자는 구분되므로 표시된 그대로 사용하세요.</li>
+        <li>복사가 실패하면 표시된 코드를 직접 선택해 복사하세요. HTTPS 및 브라우저 권한이 필요할 수 있습니다.</li>
+      </ol>
+      <p>예를 들어 앰퍼샌드는 <code>&amp;amp;</code>, 작음 기호는 <code>&amp;lt;</code>,
+        저작권 기호는 <code>&amp;copy;</code>로 입력합니다. 다중 코드포인트 문자는 숫자 참조도 여러 개가 이어집니다.</p>
+      <p>목록은 WHATWG HTML Living Standard의 2026-10-15 스냅샷입니다.
+        세미콜론이 있는 이름만 표시하며, 같은 코드포인트 조합의 별칭을 한 행으로 묶었습니다.
+        한국어 이름은 주요 항목에 직접 보완했으며 나머지는 영문 이름과 한국어 분류를 제공합니다.</p>
+      <p>데이터: <a href="https://html.spec.whatwg.org/multipage/named-characters.html">WHATWG Named character references</a>,
+        문자 이름: <a href="https://www.unicode.org/Public/17.0.0/ucd/UnicodeData.txt">Unicode 17.0</a>.
+        Tools에서 별칭 그룹화·코드 변환·한국어 검색 정보를 추가했습니다.</p>
+      <p>Copyright © WHATWG (Apple, Google, Mozilla, Microsoft).
+        <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+        (소스 코드에 포함되는 부분은 <a href="https://github.com/whatwg/html/blob/main/LICENSE">BSD 3-Clause</a>),
+        Unicode 이름은 <a href="https://www.unicode.org/license.txt">Unicode License v3</a>에 따릅니다.</p>
+      <p><a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/entities/licenses.txt`}>데이터 저작권 및 라이선스 전문</a></p>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import '../../scripts/entities/browser';
+</script>

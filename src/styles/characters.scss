@@ -1,5 +1,6 @@
 @use 'abstracts/variables' as vars;
 @use 'abstracts/mixins';
+@use 'components/copy-toast';
 
 .characters-page {
   padding-block: vars.$space-xl;
@@ -121,24 +122,6 @@
 }
 
 .character-feedback { min-height: 1.6em; font-weight: vars.$font-weight-semibold; }
-.character-toast {
-  position: fixed;
-  left: 50%;
-  bottom: calc(32px + env(safe-area-inset-bottom, 0px));
-  transform: translateX(-50%);
-  z-index: 1000;
-  max-width: calc(100vw - 2rem);
-  padding: 0.75rem vars.$space-lg;
-  border-radius: 0.5rem;
-  background: vars.$color-text;
-  color: vars.$color-surface;
-  font-weight: vars.$font-weight-semibold;
-  text-align: center;
-  pointer-events: none;
-  opacity: 0;
-
-  &[data-visible='true'] { opacity: 1; }
-}
 .character-fallback textarea { width: 100%; padding: 0.75rem; white-space: pre-wrap; }
 
 .character-dialog {

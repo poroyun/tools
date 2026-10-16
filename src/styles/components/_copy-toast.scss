@@ -1,0 +1,20 @@
+@use '../abstracts/variables' as vars;
+
+.character-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 1000;
+  max-width: calc(100vw - 2rem);
+  padding: 0.75rem vars.$space-lg;
+  border-radius: 0.5rem;
+  background: vars.$color-text;
+  color: vars.$color-surface;
+  font-weight: vars.$font-weight-semibold;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+
+  &[data-visible='true'] { opacity: 1; }
+}

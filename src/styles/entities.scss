@@ -1,0 +1,79 @@
+@use 'abstracts/variables' as vars;
+@use 'abstracts/mixins';
+@use 'components/copy-toast';
+
+.entities-page { padding-block: vars.$space-xl; }
+.entities-intro h1 { margin: 0; font-size: clamp(1.75rem, 6vw, 2.5rem); }
+
+.entity-browser {
+  margin-block: vars.$space-xl;
+  [hidden] { display: none; }
+
+  button, input, textarea {
+    min-height: 44px;
+    border: 1px solid vars.$color-border;
+    border-radius: 0.5rem;
+    background: vars.$color-surface;
+    color: vars.$color-text;
+  }
+  button { padding: 0.5rem 0.75rem; cursor: pointer; }
+  button:disabled { cursor: wait; }
+  input, textarea { width: 100%; min-width: 0; padding: 0.75rem; }
+}
+
+.entity-search {
+  label { display: block; margin-bottom: 0.5rem; font-weight: vars.$font-weight-semibold; }
+  &__input { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  input { flex: 1 1 14rem; }
+}
+
+.entity-list { list-style: none; padding: 0; margin: vars.$space-lg 0; }
+.entity-row {
+  display: grid;
+  gap: vars.$space-sm;
+  padding: vars.$space-sm;
+  margin-bottom: vars.$space-sm;
+  border: 1px solid vars.$color-border;
+  border-radius: 0.75rem;
+  background: vars.$color-surface;
+  > * { min-width: 0; }
+
+  @include mixins.from(vars.$breakpoint-tablet) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  }
+}
+.entity-identity {
+  h3 { font-size: vars.$font-size-base; margin: 0.5rem 0; }
+  p { margin: 0.25rem 0; font-size: 0.875rem; }
+  small { display: block; }
+}
+.entity-character { display: block; font-size: 1.75rem; white-space: pre-wrap; }
+.entity-codes {
+  display: grid;
+  gap: vars.$space-sm;
+  margin: 0;
+  > div { min-width: 0; }
+  dt { font-weight: vars.$font-weight-semibold; margin-bottom: 0.5rem; }
+  dd { display: flex; flex-direction: column; gap: 0.5rem; margin: 0; }
+  button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: left;
+    width: 100%;
+  }
+  code { min-width: 0; overflow-wrap: anywhere; }
+
+  @include mixins.from(vars.$breakpoint-tablet) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.entity-copy-label { flex-shrink: 0; font-size: 0.75rem; color: vars.$color-accent; }
+.entity-feedback { min-height: 1.6em; font-weight: vars.$font-weight-semibold; }
+.entities-help {
+  border-top: 1px solid vars.$color-border;
+  padding-top: vars.$space-lg;
+  ol { padding-left: vars.$space-lg; }
+  li { margin-block: 0.5rem; }
+}

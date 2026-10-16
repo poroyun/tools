@@ -12,7 +12,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "generate:emoji": "node scripts/generate-emoji.mjs",
-    "test:characters": "node --test --experimental-strip-types tests/characters.test.mjs"
+    "test:characters": "node --test --experimental-strip-types tests/characters.test.mjs",
+    "generate:entities": "node scripts/generate-entities.mjs",
+    "test:entities": "node --test --experimental-strip-types tests/entities.test.mjs"
   },
   "dependencies": {
     "astro": "7.3.7"

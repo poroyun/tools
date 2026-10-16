@@ -1,0 +1,24 @@
+<div class="entity-browser" data-entity-browser>
+  <div class="entity-search">
+    <label for="entity-query">문자·이름·엔티티 코드 검색</label>
+    <div class="entity-search__input">
+      <input id="entity-query" type="search" placeholder="저작권, 하트, amp, &lt;…" autocomplete="off" disabled />
+      <button type="button" data-clear disabled>검색어 지우기</button>
+    </div>
+  </div>
+  <p>검색은 입력 즉시 적용됩니다. 아래 코드 버튼을 누르면 표시된 코드가 그대로 복사됩니다.</p>
+  <p role="status" aria-live="polite" aria-atomic="true" data-count>엔티티 목록을 불러오고 있습니다.</p>
+  <section aria-labelledby="entity-list-title">
+    <h2 id="entity-list-title">HTML 엔티티 목록</h2>
+    <ul class="entity-list" data-results></ul>
+    <p data-empty hidden>검색 결과가 없습니다. 다른 문자나 이름으로 검색해 보세요.</p>
+    <button type="button" data-more hidden>더 보기</button>
+  </section>
+  <p class="entity-feedback" data-feedback role="status" aria-live="polite" aria-atomic="true"></p>
+  <div class="character-toast" data-copy-toast data-visible="false" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="entity-fallback" data-fallback hidden>
+    <label for="entity-manual-copy">복사하지 못했어요. 아래 코드를 선택해 직접 복사해 주세요.</label>
+    <textarea id="entity-manual-copy" readonly rows="2"></textarea>
+  </div>
+  <noscript><p>엔티티 목록 검색과 복사를 사용하려면 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
+</div>
