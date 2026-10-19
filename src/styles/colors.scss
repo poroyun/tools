@@ -85,7 +85,7 @@
   &::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; margin-top: -3px; border: 2px solid #fff; border-radius: 50%; background: vars.$color-text; box-shadow: 0 0 0 1px vars.$color-text; }
   &::-moz-range-thumb { width: 16px; height: 16px; border: 2px solid #fff; border-radius: 50%; background: vars.$color-text; box-shadow: 0 0 0 1px vars.$color-text; }
 }
-.color-current { margin-block: 0.5rem vars.$space-sm; font-family: monospace; }
+.color-current { margin-block: 0.5rem vars.$space-sm; font-family: vars.$font-family-base; }
 .color-palette {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
