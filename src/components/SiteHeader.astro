@@ -1,5 +1,39 @@
+---
+import { tools } from '../data/tools';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const homeHref = `${base}/`;
+const currentPath = Astro.url.pathname.replace(/\/index\.html$/, '/').replace(/\/+$/, '');
+// 제공 중인 도구를 먼저 표시하고 원본 데이터 순서는 변경하지 않습니다.
+const navigationTools = [...tools].sort((a, b) =>
+  Number(a.status !== 'available') - Number(b.status !== 'available'),
+);
+---
+
 <header class="site-header">
-  <nav class="container site-nav" aria-label="주요 탐색">
-    <a class="brand" href={import.meta.env.BASE_URL}>Tools</a>
-  </nav>
+  <div class="container site-header__inner">
+    <a class="brand" href={homeHref}>Tools</a>
+    <nav class="site-nav" aria-label="도구 메뉴">
+      <ul class="site-nav__list">
+        {navigationTools.map((tool) => {
+          const available = tool.status === 'available' && /^\/(?!\/)[^\s\\]*$/.test(tool.href);
+          const href = available ? `${base}${tool.href}` : undefined;
+          const current = href !== undefined && currentPath === href.replace(/\/+$/, '');
+          return (
+            <li>
+              {href ? (
+                <a class="site-nav__item" href={href} aria-current={current ? 'page' : undefined}>
+                  {tool.title}
+                </a>
+              ) : (
+                <span class="site-nav__item site-nav__item--disabled" aria-disabled="true">
+                  {tool.title}<small class="site-nav__status">준비 중</small>
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  </div>
 </header>

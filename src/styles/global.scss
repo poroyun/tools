@@ -21,23 +21,100 @@ body {
 }
 
 .site-header {
-  padding-block: vars.$space-md;
+  padding-block: 0.625rem;
   border-bottom: 1px solid vars.$color-border;
 
+  @include mixins.from(vars.$breakpoint-tablet) {
+    padding-block: 0.875rem;
+  }
+
   .brand {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
     color: vars.$color-accent;
     font-size: vars.$font-size-brand;
     font-weight: vars.$font-weight-bold;
     text-decoration: none;
+
   }
 }
 
-.site-nav {
+.site-header__inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: vars.$space-sm vars.$space-lg;
+  gap: 0.5rem vars.$space-lg;
 }
+
+.site-nav {
+  width: 100%;
+  min-width: 0;
+
+  @include mixins.from(vars.$breakpoint-tablet) {
+    width: auto;
+    margin-inline-start: auto;
+  }
+}
+
+.site-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li { display: flex; min-width: 0; max-width: 100%; }
+
+  @include mixins.from(vars.$breakpoint-tablet) {
+    gap: 0.625rem;
+  }
+}
+
+.site-nav__item {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  max-width: 100%;
+  min-height: 36px;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid vars.$color-border;
+  border-radius: 999px;
+  background: vars.$color-surface;
+  box-shadow: none;
+  color: vars.$color-text;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  text-decoration: none;
+
+  @include mixins.from(vars.$breakpoint-tablet) {
+    font-size: 0.75rem;
+  }
+
+  @media (pointer: coarse) {
+    min-height: 44px;
+  }
+
+  &[aria-current='page'] {
+    border-color: transparent;
+    background: vars.$color-accent;
+    color: vars.$color-surface;
+    font-weight: vars.$font-weight-semibold;
+  }
+}
+
+a.site-nav__item:not([aria-current='page']):hover {
+  color: vars.$color-accent;
+  border-color: rgba(vars.$color-accent, 0.25);
+  background: rgba(vars.$color-accent, 0.06);
+}
+.site-nav__item--disabled {
+  background: rgba(vars.$color-border, 0.45);
+  color: rgba(vars.$color-text, 0.65);
+}
+.site-nav__status { font-size: 0.75rem; }
 
 .site-main {
   flex: 1;
