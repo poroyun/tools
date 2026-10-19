@@ -1,0 +1,100 @@
+---
+import { palette } from '../../data/colors/palette';
+import { createColorState } from '../../scripts/colors/state';
+import { formatColor, displayNumber } from '../../scripts/colors/convert';
+
+const state = createColorState();
+const formats = formatColor(state.color, state.hsl);
+const formatLabels = { hex: 'HEX', hex8: 'HEX8', rgb: 'RGB', rgba: 'RGBA', hsl: 'HSL', hsla: 'HSLA', hsv: 'HSV' };
+---
+
+<div class="color-tool" data-color-tool>
+  <div class="color-workspace">
+    <section class="color-panel" aria-labelledby="color-select-title">
+      <div class="color-panel-heading">
+        <h2 id="color-select-title">색상 선택</h2>
+        <button class="color-eyedropper" type="button" data-eyedropper aria-label="화면에서 색상 추출" title="화면에서 색상 추출" hidden disabled>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m15 6 3-3a2.12 2.12 0 0 1 3 3l-3 3M13 4l7 7M15 6 4 17l-1 4 4-1L18 9M6 15l3 3" />
+          </svg>
+        </button>
+      </div>
+      <div class="color-sv" data-sv tabindex="0" role="group" aria-label="채도와 명도 색상 팔레트" aria-describedby="color-sv-help" style={`--color-hue: ${state.hsv.h}`}>
+        <span class="color-sv-handle" data-sv-handle style={`left:${state.hsv.s}%;top:${100 - state.hsv.v}%`} aria-hidden="true"></span>
+      </div>
+      <p id="color-sv-help" class="color-hint">클릭하거나 드래그해 선택하세요. 팔레트에서 ← →는 채도, ↑ ↓는 명도 조절입니다. Shift와 함께 누르면 10%씩 조절합니다.</p>
+      <div class="color-field color-hue-field">
+        <label for="color-hue">색조 (Hue)</label>
+        <input id="color-hue" class="color-hue" type="range" min="0" max="360" step="any" value={state.hsv.h} disabled />
+      </div>
+      <p class="color-current" data-color-summary role="status" aria-live="polite" aria-atomic="true">현재 색상 {formats.hex}</p>
+      <h3 id="palette-title">기본 팔레트</h3>
+      <div class="color-palette" role="group" aria-labelledby="palette-title">
+        {palette.map((entry) => (
+          <button type="button" data-palette={entry.hex} aria-label={`${entry.name} ${entry.hex} 선택`}
+            title={`${entry.name} ${entry.hex}`} style={`background:${entry.hex}`}
+            aria-pressed={entry.hex === formats.hex} disabled></button>
+        ))}
+      </div>
+      <div class="color-inputs">
+        <div class="color-field">
+          <label for="color-hex">HEX 직접 입력</label>
+          <input id="color-hex" type="text" value={formats.hex} spellcheck="false" autocomplete="off"
+            aria-describedby="color-hex-hint color-hex-error" disabled />
+        </div>
+      </div>
+      <p id="color-hex-hint" class="color-hint">#RGB · #RRGGBB · #RRGGBBAA 지원. 입력이 완성될 때까지 마지막 유효한 색상을 유지합니다.</p>
+      <p id="color-hex-error" class="color-error" data-hex-error role="status" aria-live="polite"></p>
+      <p data-eye-status role="status" aria-live="polite"></p>
+      <details class="color-details">
+        <summary>RGB · HSL · Alpha 상세 조정</summary>
+        <fieldset>
+          <legend>RGB — 각 0~255</legend>
+          <div class="color-channels">
+            {(['r', 'g', 'b'] as const).map((channel) => (
+              <div class="color-field"><label for={`color-${channel}`}>{channel.toUpperCase()}</label>
+                <input id={`color-${channel}`} data-rgb={channel} type="number" min="0" max="255" step="any"
+                  value={displayNumber(state.color[channel], 4)} aria-describedby="color-adjust-error" disabled />
+              </div>
+            ))}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>HSL — H 0~360°, S/L 0~100%</legend>
+          <div class="color-channels">
+            {(['h', 's', 'l'] as const).map((channel) => (
+              <div class="color-field"><label for={`color-${channel}`}>{channel.toUpperCase()} {channel === 'h' ? '(°)' : '(%)'}</label>
+                <input id={`color-${channel}`} data-hsl={channel} type="number" min="0" max={channel === 'h' ? '360' : '100'} step="any"
+                  value={displayNumber(state.hsl[channel], 4)} aria-describedby="color-adjust-error" disabled />
+              </div>
+            ))}
+          </div>
+        </fieldset>
+        <div class="color-field"><label for="color-alpha">Alpha — 0(투명)~1(불투명)</label>
+          <input id="color-alpha" type="number" min="0" max="1" step="0.1" value="1" aria-describedby="color-adjust-error" disabled />
+        </div>
+        <p id="color-adjust-error" class="color-error" data-adjust-error role="status" aria-live="polite"></p>
+      </details>
+    </section>
+    <section class="color-panel" aria-labelledby="color-output-title">
+      <h2 id="color-output-title">변환 결과</h2>
+      <p class="color-hint">코드 옆의 복사 버튼을 누르세요. HEX·RGB·HSL은 Alpha를 제외한 값입니다.</p>
+      <dl class="color-results">
+        {Object.entries(formats).map(([key, value]) => (
+          <div><dt>{formatLabels[key as keyof typeof formatLabels]}</dt><dd>
+            <code data-format={key}>{value}</code>
+            <button type="button" data-copy={key} aria-label={`${formatLabels[key as keyof typeof formatLabels]} 색상 코드 복사`} disabled>복사</button>
+          </dd></div>
+        ))}
+      </dl>
+      <p class="color-hint">HSV는 CSS 함수가 아닙니다. 투명도가 필요하면 HEX8, RGBA 또는 HSLA를 사용하세요.</p>
+    </section>
+  </div>
+  <p data-copy-feedback class="color-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+  <div class="character-toast" data-copy-toast data-visible="false" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="color-fallback" data-copy-fallback hidden>
+    <label for="color-manual-copy">복사하지 못했어요. 아래 코드를 선택해 직접 복사해 주세요.</label>
+    <textarea id="color-manual-copy" readonly rows="2"></textarea>
+  </div>
+  <noscript><p>색상 조정과 복사에는 JavaScript가 필요합니다. 위 기본 색상 코드는 직접 선택해 복사할 수 있습니다.</p></noscript>
+</div>

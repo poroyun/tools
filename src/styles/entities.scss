@@ -92,6 +92,20 @@
 }
 .entity-copy-label { flex-shrink: 0; font-size: 0.8125rem; color: vars.$color-accent; }
 .entity-feedback { min-height: 1.6em; font-weight: vars.$font-weight-semibold; }
+.entity-browser {
+  button:not([hidden]) { @include mixins.button-size; }
+  input[type='text'], input[type='search'] { @include mixins.input-size; }
+  .entity-search__input {
+    input[type='search'] { @include mixins.input-size(lg); }
+    button { @include mixins.button-size(lg); }
+  }
+  .entity-codes button {
+    justify-content: space-between;
+    padding-inline: 0.5rem;
+    code { white-space: nowrap; overflow-x: auto; }
+  }
+  .entity-copy-label { font-size: inherit; }
+}
 .entities-help {
   border-top: 1px solid vars.$color-border;
   padding-top: vars.$space-lg;

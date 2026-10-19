@@ -130,7 +130,7 @@ test('/tools base 및 홈 도구 링크·다른 도구 상태 유지', () => {
   const entry = tools.find((tool) => tool.href === '/entities/');
   assert.equal(entry.status, 'available');
   assert.equal(tools.find((tool) => tool.href === '/characters/').status, 'available');
-  assert.equal(tools.find((tool) => tool.href === '/colors/').status, 'coming-soon');
+  assert.equal(tools.find((tool) => tool.href === '/colors/').status, 'available');
 });
 
 test('행 렌더러는 엔티티를 HTML로 해석하지 않고 코드별 버튼에서 원문 전달 (DOM 대역)', () => {

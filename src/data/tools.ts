@@ -10,10 +10,10 @@ export const tools = [
   },
   {
     title: '색상표',
-    description: 'HEX, RGB 등 다양한 색상 코드를 확인하세요.',
+    description: 'HEX·RGB·HSL 색상 코드를 선택하고 변환·복사하세요.',
     href: '/colors/',
     icon: '◐',
-    status: 'coming-soon',
+    status: 'available',
   },
   {
     title: 'HTML 코드표',

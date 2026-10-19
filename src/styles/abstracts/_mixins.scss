@@ -17,3 +17,38 @@
     padding-inline: vars.$space-lg;
   }
 }
+
+// 버튼과 텍스트 입력창의 border-box 최종 크기를 공유합니다.
+@mixin control-size($size: sm) {
+  $height: 40px;
+  $font-size: 14px;
+  @if $size == md { $height: 44px; $font-size: 15px; }
+  @else if $size == lg { $height: 52px; $font-size: 16px; }
+  @else if $size != sm { @error 'Unknown control size: #{$size}'; }
+
+  box-sizing: border-box;
+  height: $height;
+  min-height: $height;
+  padding: 0 0.75rem;
+  font-size: $font-size;
+  line-height: 1.2;
+
+  @if $size == sm {
+    @include from(vars.$breakpoint-tablet) { height: 36px; min-height: 36px; }
+  }
+}
+
+@mixin button-size($size: sm) {
+  @include control-size($size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+// text/search 등의 한 줄 입력 전용. number/color/textarea에는 명시적으로 적용하지 않습니다.
+@mixin input-size($size: sm) {
+  @include control-size($size);
+  min-width: 0;
+}
