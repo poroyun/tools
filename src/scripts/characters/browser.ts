@@ -4,6 +4,7 @@ import { copyCharacter } from './clipboard';
 import { createCharacterButton } from './button';
 import { nextPage } from './pagination';
 import { createCopyToast } from './toast';
+import { keepDialogFocus } from './dialog-focus';
 import { supplementalKeywords } from '../../data/emoji/supplemental';
 import type emojiDataset from '../../data/emoji/generated.json';
 
@@ -158,6 +159,7 @@ async function initialize(): Promise<void> {
       results.children[previous]?.querySelector<HTMLButtonElement>('button')?.focus();
     });
     close.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('keydown', (event) => keepDialogFocus(dialog, event));
     // Escape는 native dialog의 기본 cancel 동작을 사용합니다.
     // 실패 시 수동 복사 입력란으로 이동한 포커스는 덮어쓰지 않습니다.
     dialog.addEventListener('close', () => {

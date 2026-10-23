@@ -10,6 +10,32 @@ import { supplementalKeywords } from '../src/data/emoji/supplemental.ts';
 import { createCharacterButton } from '../src/scripts/characters/button.ts';
 import { PAGE_SIZES, nextPage } from '../src/scripts/characters/pagination.ts';
 import { COPY_TOAST_DURATION, createCopyToast } from '../src/scripts/characters/toast.ts';
+import { keepDialogFocus } from '../src/scripts/characters/dialog-focus.ts';
+
+test('변형 선택창 양끝의 Tab·Shift+Tab은 내부 순환, Escape·중간 이동은 기본 동작 유지', () => {
+  const ownerDocument = { activeElement: null };
+  const buttons = Array.from({ length: 3 }, () => ({ focus() { ownerDocument.activeElement = this; } }));
+  const dialog = { open: true, ownerDocument, querySelectorAll: () => buttons };
+  const press = (active, key, shiftKey = false, modifiers = {}) => {
+    ownerDocument.activeElement = active;
+    let prevented = false;
+    keepDialogFocus(dialog, { key, shiftKey, ...modifiers, preventDefault() { prevented = true; } });
+    return prevented;
+  };
+  assert.equal(press(buttons[0], 'Tab', true), true);
+  assert.equal(ownerDocument.activeElement, buttons[2]);
+  assert.equal(press(buttons[2], 'Tab'), true);
+  assert.equal(ownerDocument.activeElement, buttons[0]);
+  assert.equal(press(buttons[1], 'Tab'), false);
+  assert.equal(ownerDocument.activeElement, buttons[1]);
+  assert.equal(press(buttons[0], 'Escape'), false);
+  assert.equal(press(buttons[2], 'Tab', false, { ctrlKey: true }), false);
+  dialog.open = false;
+  assert.equal(press(buttons[2], 'Tab'), false);
+  dialog.open = true;
+  dialog.querySelectorAll = () => [];
+  assert.equal(press(null, 'Tab'), false);
+});
 
 const data = JSON.parse(readFileSync(new URL('../src/data/emoji/generated.json', import.meta.url), 'utf8'));
 const aliases = JSON.parse(readFileSync(new URL('../scripts/data-sources/variant-aliases.json', import.meta.url), 'utf8'));

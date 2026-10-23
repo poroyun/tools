@@ -139,6 +139,7 @@
   border: 1px solid vars.$color-border;
   border-radius: 0.75rem;
   overflow-y: auto;
+  overscroll-behavior: contain;
   color: vars.$color-text;
   background: vars.$color-background;
 
