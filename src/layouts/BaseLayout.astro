@@ -55,8 +55,9 @@ const jsonLD = JSON.stringify({
     <script type="application/ld+json" is:inline set:html={jsonLD} />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">본문 바로가기</a>
     <SiteHeader />
-    <main class="site-main"><slot /></main>
+    <main id="main-content" class="site-main" tabindex="-1"><slot /></main>
     <SiteFooter />
   </body>
 </html>

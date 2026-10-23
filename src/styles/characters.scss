@@ -108,16 +108,22 @@
 }
 
 .character-grid--text {
-  grid-template-columns: minmax(0, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+
+  li { flex: 0 1 auto; max-width: 100%; }
 
   .character-copy {
+    width: auto;
+    max-width: 100%;
+    min-width: 44px;
+    min-height: 44px;
+    padding-inline: 8px;
     font-family: vars.$font-family-base;
     font-size: vars.$font-size-base;
+    // Intrinsic widths keep normal strings on one line. Only oversized items wrap.
     white-space: pre-wrap;
-  }
-
-  @include mixins.from(vars.$breakpoint-tablet) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow-wrap: anywhere;
   }
 }
 

@@ -41,13 +41,13 @@ const initialKaomoji = nextPage(kaomoji, 0, 'kaomoji');
     <label for="manual-copy">복사하지 못했어요. 아래 문자를 선택해 직접 복사해 주세요.</label>
     <textarea id="manual-copy" readonly rows="2"></textarea>
   </div>
-  <dialog class="character-dialog" data-variants aria-labelledby="variant-title">
+  <dialog class="character-dialog" data-variants aria-labelledby="variant-title" aria-describedby="variant-name variant-help">
     <div class="character-dialog__header">
       <h2 id="variant-title">이모지 변형 선택</h2>
       <button type="button" data-close>닫기</button>
     </div>
-    <p data-variant-name></p>
-    <p>원하는 문자를 누르면 복사됩니다.</p>
+    <p id="variant-name" data-variant-name></p>
+    <p id="variant-help">원하는 문자를 누르면 복사됩니다.</p>
     <ul class="character-grid" data-variant-results></ul>
   </dialog>
   <noscript><p>기본 이모지 192개는 JavaScript 없이도 볼 수 있습니다. 탭 전환·검색·변형 선택·복사·더 보기는 JavaScript가 필요합니다. 필요한 문자는 직접 선택해 복사하세요.</p></noscript>

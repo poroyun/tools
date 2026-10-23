@@ -169,6 +169,7 @@ async function initialize(): Promise<void> {
       }
     }
     modeButtons.forEach((button, index) => button.addEventListener('keydown', (event) => {
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
       let target: number;
       if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') target = (index + 1) % modeButtons.length;
       else if (event.key === 'Home') target = 0;

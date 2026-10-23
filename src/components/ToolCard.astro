@@ -23,6 +23,6 @@ const Card = isLinked ? 'a' : 'div';
     {icon && <span class="tool-card__icon" aria-hidden="true">{icon}</span>}
     <h3 class="tool-card__title">{title}</h3>
     <p class="tool-card__description">{description}</p>
-    <span class="tool-card__status">{status === 'coming-soon' ? '준비 중' : '이용 가능'}</span>
+    {status === 'coming-soon' && <span class="tool-card__status">준비 중</span>}
   </Card>
 </article>

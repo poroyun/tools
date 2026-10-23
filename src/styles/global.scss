@@ -16,6 +16,27 @@ body {
   outline-offset: 3px;
 }
 
+.skip-link {
+  position: fixed;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  z-index: 2000;
+  padding: 0.75rem 1rem;
+  border: 2px solid vars.$color-accent;
+  border-radius: 0.5rem;
+  background: vars.$color-surface;
+  color: vars.$color-accent;
+  transform: translateY(calc(-100% - 1rem));
+
+  &:focus { transform: none; }
+}
+
+main details > summary {
+  min-height: 44px;
+  padding-block: 0.625rem;
+  cursor: pointer;
+}
+
 .container {
   @include mixins.container;
 }
@@ -208,11 +229,11 @@ a.tool-card__content:hover {
 }
 
 .tool-card__description {
-  margin: 0 0 vars.$space-lg;
+  margin: 0;
 }
 
 .tool-card__status {
-  margin-top: auto;
+  margin-top: vars.$space-lg;
   padding: 0.25rem 0.75rem;
   background: vars.$color-background;
   border: 1px solid vars.$color-border;
