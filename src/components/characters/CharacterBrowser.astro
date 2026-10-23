@@ -1,7 +1,15 @@
+---
+import emojiData from '../../data/emoji/generated.json';
+import { kaomoji } from '../../data/kaomoji/index';
+import { nextPage } from '../../scripts/characters/pagination';
+import CharacterItem from './CharacterItem.astro';
+const initialEmoji = nextPage(emojiData.entries, 0, 'emoji');
+const initialKaomoji = nextPage(kaomoji, 0, 'kaomoji');
+---
 <div class="character-browser" data-character-browser>
-  <div class="character-tabs" role="group" aria-label="문자 종류">
-    <button type="button" data-mode="emoji" aria-pressed="true" disabled>Unicode 이모지</button>
-    <button type="button" data-mode="kaomoji" aria-pressed="false" disabled>텍스트 이모티콘</button>
+  <div class="character-tabs" role="tablist" aria-label="문자 종류">
+    <button type="button" id="emoji-tab" role="tab" data-mode="emoji" aria-selected="true" aria-controls="emoji-panel" tabindex="0" disabled>Unicode 이모지</button>
+    <button type="button" id="kaomoji-tab" role="tab" data-mode="kaomoji" aria-selected="false" aria-controls="kaomoji-panel" tabindex="-1" disabled>텍스트 이모티콘</button>
   </div>
   <p class="character-hint">종류를 바꾸면 검색어와 카테고리가 초기화됩니다. ⌄ 표시가 있는 이모지는 변형을 선택한 뒤 복사하고, 나머지 문자는 바로 복사합니다.</p>
   <div class="character-search">
@@ -12,9 +20,18 @@
     </div>
   </div>
   <div class="character-categories" role="group" aria-label="카테고리" data-categories></div>
-  <p data-result-count role="status" aria-live="polite" aria-atomic="true">문자 목록을 불러오고 있습니다.</p>
+  <p data-result-count role="status" aria-live="polite" aria-atomic="true">검색 결과 {emojiData.entries.length.toLocaleString('ko-KR')}개 · {initialEmoji.length}개 표시</p>
   <section aria-label="문자 검색 결과">
-    <ul class="character-grid" data-results></ul>
+    <div id="emoji-panel" role="tabpanel" aria-labelledby="emoji-tab">
+      <ul class="character-grid" data-results data-mode-results="emoji" data-initial>
+        {initialEmoji.map((entry) => <CharacterItem entry={entry} variants />)}
+      </ul>
+    </div>
+    <div id="kaomoji-panel" role="tabpanel" aria-labelledby="kaomoji-tab" hidden>
+      <ul class="character-grid character-grid--text" data-mode-results="kaomoji" data-initial>
+        {initialKaomoji.map((entry) => <CharacterItem entry={entry} />)}
+      </ul>
+    </div>
     <p data-empty hidden>검색 결과가 없습니다. 검색어나 카테고리를 바꿔 보세요.</p>
     <button type="button" class="character-more" data-more hidden>더 보기</button>
   </section>
@@ -33,5 +50,5 @@
     <p>원하는 문자를 누르면 복사됩니다.</p>
     <ul class="character-grid" data-variant-results></ul>
   </dialog>
-  <noscript><p>검색과 복사를 사용하려면 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
+  <noscript><p>기본 이모지 192개는 JavaScript 없이도 볼 수 있습니다. 탭 전환·검색·변형 선택·복사·더 보기는 JavaScript가 필요합니다. 필요한 문자는 직접 선택해 복사하세요.</p></noscript>
 </div>

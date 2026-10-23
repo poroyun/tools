@@ -7,9 +7,32 @@ import pretendardFont from '../assets/fonts/PretendardVariable.woff2?url';
 interface Props {
   title: string;
   description: string;
+  structuredData: {
+    type: 'WebSite' | 'WebApplication';
+    name: string;
+  };
 }
 
-const { title, description } = Astro.props;
+const { title, description, structuredData } = Astro.props;
+if (!Astro.site) throw new Error('SEO metadata requires the Astro site setting.');
+
+const base = import.meta.env.BASE_URL.replace(/^\/+|\/+$/g, '');
+const pathname = Astro.url.pathname;
+// Astro's pathname already includes base; remove it before composing the URL once.
+const relativePath = base && (pathname === `/${base}` || pathname.startsWith(`/${base}/`))
+  ? pathname.slice(base.length + 1)
+  : pathname;
+const segments = [base, relativePath.replace(/^\/+|\/+$/g, '')].filter(Boolean);
+const canonicalPath = segments.length ? `/${segments.join('/')}/` : '/';
+const canonicalURL = new URL(canonicalPath, Astro.site).href;
+// Escape '<' so page data cannot terminate the JSON-LD script element.
+const jsonLD = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': structuredData.type,
+  name: structuredData.name,
+  description,
+  url: canonicalURL,
+}).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
@@ -20,6 +43,16 @@ const { title, description } = Astro.props;
     <link rel="preload" href={pretendardFont} as="font" type="font/woff2" crossorigin="anonymous" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tools" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <script type="application/ld+json" is:inline set:html={jsonLD} />
   </head>
   <body>
     <SiteHeader />

@@ -1,7 +1,7 @@
 import type { CharacterEntry, CharacterVariant, Category } from './types';
 import { createSearchIndex, filterCharacters } from './search';
 import { copyCharacter } from './clipboard';
-import { createCharacterButton } from './button';
+import { createCharacterButton, configureCharacterButton } from './button';
 import { nextPage } from './pagination';
 import { createCopyToast } from './toast';
 import { keepDialogFocus } from './dialog-focus';
@@ -19,7 +19,7 @@ async function initialize(): Promise<void> {
   const input = element<HTMLInputElement>('#character-query');
   const clear = element<HTMLButtonElement>('[data-clear]');
   const categoryList = element<HTMLElement>('[data-categories]');
-  const results = element<HTMLUListElement>('[data-results]');
+  let results = element<HTMLUListElement>('[data-mode-results="emoji"]');
   const count = element<HTMLElement>('[data-result-count]');
   const empty = element<HTMLElement>('[data-empty]');
   const more = element<HTMLButtonElement>('[data-more]');
@@ -104,13 +104,21 @@ async function initialize(): Promise<void> {
       more.hidden = shown >= filtered.length;
     }
 
-    function update(): void {
+    function update(reuseInitial = false): void {
       if (searchTimer) clearTimeout(searchTimer);
       searchTimer = undefined;
       filtered = filterCharacters(catalogs[mode].index, input.value, category);
+      empty.hidden = filtered.length > 0;
+      if (reuseInitial && results.hasAttribute('data-initial')) {
+        results.removeAttribute('data-initial');
+        shown = results.children.length;
+        count.textContent = `검색 결과 ${filtered.length.toLocaleString('ko-KR')}개 · ${shown.toLocaleString('ko-KR')}개 표시`;
+        more.hidden = shown >= filtered.length;
+        return;
+      }
+      results.removeAttribute('data-initial');
       results.replaceChildren();
       shown = 0;
-      empty.hidden = filtered.length > 0;
       results.classList.toggle('character-grid--text', mode === 'kaomoji');
       appendResults();
     }
@@ -139,11 +147,37 @@ async function initialize(): Promise<void> {
         mode = button.dataset.mode;
         category = 'all';
         input.value = '';
-        for (const tab of modeButtons) tab.setAttribute('aria-pressed', String(tab === button));
+        for (const tab of modeButtons) {
+          const selected = tab === button;
+          tab.setAttribute('aria-selected', String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+          element<HTMLElement>(`#${tab.getAttribute('aria-controls')}`).hidden = !selected;
+        }
+        results = element<HTMLUListElement>(`[data-mode-results="${mode}"]`);
         renderCategories(catalogs[mode].categories);
-        update();
+        update(true);
       });
     }
+    // Bind the build-time DOM without replacing it, including the inactive text panel.
+    for (const staticMode of ['emoji', 'kaomoji'] as const) {
+      const byId = new Map(catalogs[staticMode].index.map(({ entry }) => [entry.id, entry]));
+      for (const button of element<HTMLUListElement>(`[data-mode-results="${staticMode}"]`).querySelectorAll<HTMLButtonElement>('[data-character-id]')) {
+        const entry = byId.get(button.dataset.characterId!);
+        if (!entry) throw new Error('Unknown static character');
+        configureCharacterButton(button, entry, (item) => { void copy(item); }, staticMode === 'emoji' ? openVariants : undefined);
+        button.disabled = false;
+      }
+    }
+    modeButtons.forEach((button, index) => button.addEventListener('keydown', (event) => {
+      let target: number;
+      if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') target = (index + 1) % modeButtons.length;
+      else if (event.key === 'Home') target = 0;
+      else if (event.key === 'End') target = modeButtons.length - 1;
+      else return;
+      event.preventDefault();
+      modeButtons[target].focus();
+      modeButtons[target].click();
+    }));
     input.disabled = false;
     clear.disabled = false;
     input.addEventListener('input', () => {
@@ -167,9 +201,9 @@ async function initialize(): Promise<void> {
       dialogOpener = undefined;
     });
     renderCategories(catalogs[mode].categories);
-    update();
+    update(true);
   } catch (error) {
-    count.textContent = '문자 목록을 불러오지 못했습니다. 페이지를 새로고침해 주세요.';
+    count.textContent = '추가 데이터를 불러오지 못했습니다. 기본 목록은 볼 수 있습니다. 페이지를 새로고침해 주세요.';
     console.error('Character browser initialization failed', error);
   }
 }

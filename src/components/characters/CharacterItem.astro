@@ -1,0 +1,14 @@
+---
+import type { CharacterEntry } from '../../scripts/characters/types';
+import { characterButtonLabel } from '../../scripts/characters/button';
+interface Props { entry: CharacterEntry; variants?: boolean; }
+const { entry, variants = false } = Astro.props;
+const hasVariants = variants && entry.variants.length > 0;
+const label = characterButtonLabel(entry, hasVariants);
+---
+<li>
+  <button type="button" class="character-copy" data-character-id={entry.id}
+    aria-label={label} title={label} aria-haspopup={hasVariants ? 'dialog' : undefined} disabled>
+    {entry.char}{hasVariants && <span class="character-variant-indicator" aria-hidden="true">⌄</span>}
+  </button>
+</li>

@@ -1,0 +1,24 @@
+---
+import type { EntityEntry } from '../../scripts/entities/model';
+import { entityPresentation } from '../../scripts/entities/presentation';
+interface Props { entry: EntityEntry; }
+const { entry } = Astro.props;
+const view = entityPresentation(entry);
+---
+<li class="entity-row" data-entity-id={entry.id}>
+  <div class="entity-identity">
+    <span class="entity-character" dir="auto">{view.character}</span>
+    <h3>{view.name}</h3>
+    <p>{view.detail}</p>
+    <small>{view.points}</small>
+  </div>
+  <dl class="entity-codes">
+    {view.groups.map(([label, values]) => <div>
+      <dt>{label}</dt>
+      <dd>{values.map((value) => <button type="button" data-copy-value={value}
+        aria-label={`${view.name} ${label} ${value} 복사`} disabled>
+        <code>{value}</code><span class="entity-copy-label">복사</span>
+      </button>)}</dd>
+    </div>)}
+  </dl>
+</li>

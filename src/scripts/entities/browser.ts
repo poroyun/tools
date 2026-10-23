@@ -30,7 +30,7 @@ async function initialize(): Promise<void> {
     if (!Array.isArray(data.entries)) throw new Error('Invalid entity data');
     const index = createEntityIndex(data.entries);
     let filtered = data.entries;
-    let shown = 0;
+    let shown = list.children.length;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const writer = navigator.clipboard?.writeText
       ? (text: string) => navigator.clipboard.writeText(text) : undefined;
@@ -46,14 +46,17 @@ async function initialize(): Promise<void> {
       },
     }, writer);
 
+    function updateCount(): void {
+      more.hidden = shown >= filtered.length;
+      count.textContent = `검색 결과 ${filtered.length.toLocaleString('ko-KR')}개 · ${shown.toLocaleString('ko-KR')}개 표시 (별칭은 한 항목으로 묶음)`;
+    }
     function append(): void {
       const fragment = document.createDocumentFragment();
       const next = entityPage(filtered, shown);
       for (const entry of next) fragment.append(createEntityRow(entry, (text) => { void copy(text); }));
       list.append(fragment);
       shown += next.length;
-      more.hidden = shown >= filtered.length;
-      count.textContent = `검색 결과 ${filtered.length.toLocaleString('ko-KR')}개 · ${shown.toLocaleString('ko-KR')}개 표시 (별칭은 한 항목으로 묶음)`;
+      updateCount();
     }
     function update(): void {
       if (timer !== undefined) clearTimeout(timer);
@@ -63,6 +66,10 @@ async function initialize(): Promise<void> {
       list.replaceChildren();
       empty.hidden = filtered.length > 0;
       append();
+    }
+    for (const button of list.querySelectorAll<HTMLButtonElement>('[data-copy-value]')) {
+      button.addEventListener('click', () => { void copy(button.dataset.copyValue!); });
+      button.disabled = false;
     }
     input.disabled = false;
     clear.disabled = false;
@@ -77,9 +84,9 @@ async function initialize(): Promise<void> {
       append();
       list.children[previous]?.querySelector<HTMLButtonElement>('button')?.focus();
     });
-    update();
+    updateCount();
   } catch (error) {
-    count.textContent = '엔티티 목록을 불러오지 못했습니다. 페이지를 새로고침해 주세요.';
+    count.textContent = '추가 데이터를 불러오지 못했습니다. 기본 목록은 볼 수 있습니다. 페이지를 새로고침해 주세요.';
     console.error('Entity browser initialization failed', error);
   }
 }

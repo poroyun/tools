@@ -10,22 +10,38 @@ export function createCharacterButton(
   button.type = 'button';
   button.className = 'character-copy';
   button.textContent = item.char;
+  configureCharacterButton(button, item, onCopy, onSelectVariants);
+  return button;
+}
+
+export function characterButtonLabel(item: CharacterVariant, hasVariants: boolean): string {
+  return `${item.koName || item.name}: ${item.char} ${hasVariants ? '변형 선택' : '복사'}`;
+}
+
+// Both build-time buttons and newly created buttons use the same event behavior.
+export function configureCharacterButton(
+  button: HTMLButtonElement,
+  item: CharacterVariant,
+  onCopy: (item: CharacterVariant) => void,
+  onSelectVariants?: (entry: CharacterEntry, opener: HTMLButtonElement) => void,
+): void {
   const entry = 'variants' in item ? item as CharacterEntry : undefined;
   const hasVariants = Boolean(onSelectVariants && entry?.variants.length);
-  const label = `${item.koName || item.name}: ${item.char} ${hasVariants ? '변형 선택' : '복사'}`;
+  const label = characterButtonLabel(item, hasVariants);
   button.setAttribute('aria-label', label);
   button.title = label;
 
   if (hasVariants && entry && onSelectVariants) {
     button.setAttribute('aria-haspopup', 'dialog');
-    const indicator = document.createElement('span');
-    indicator.className = 'character-variant-indicator';
-    indicator.textContent = '⌄';
-    indicator.setAttribute('aria-hidden', 'true');
-    button.append(indicator);
+    if (!button.querySelector?.('.character-variant-indicator')) {
+      const indicator = document.createElement('span');
+      indicator.className = 'character-variant-indicator';
+      indicator.textContent = '⌄';
+      indicator.setAttribute('aria-hidden', 'true');
+      button.append(indicator);
+    }
     button.addEventListener('click', () => onSelectVariants(entry, button));
   } else {
     button.addEventListener('click', () => onCopy(item));
   }
-  return button;
 }

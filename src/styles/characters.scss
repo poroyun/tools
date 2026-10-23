@@ -32,7 +32,7 @@
 
   button:disabled { cursor: wait; }
 
-  button[aria-pressed='true'] {
+  button[aria-pressed='true'], button[aria-selected='true'] {
     color: vars.$color-surface;
     background: vars.$color-accent;
     border-color: vars.$color-accent;

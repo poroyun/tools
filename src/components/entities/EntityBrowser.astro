@@ -1,3 +1,9 @@
+---
+import data from '../../data/entities/generated.json';
+import { entityPage } from '../../scripts/entities/model';
+import EntityItem from './EntityItem.astro';
+const initialEntries = entityPage(data.entries);
+---
 <div class="entity-browser" data-entity-browser>
   <div class="entity-search">
     <label for="entity-query">문자·이름·엔티티 코드 검색</label>
@@ -7,10 +13,10 @@
     </div>
   </div>
   <p>검색은 입력 즉시 적용됩니다. 아래 코드 버튼을 누르면 표시된 코드가 그대로 복사됩니다.</p>
-  <p role="status" aria-live="polite" aria-atomic="true" data-count>엔티티 목록을 불러오고 있습니다.</p>
+  <p role="status" aria-live="polite" aria-atomic="true" data-count>검색 결과 {data.entries.length.toLocaleString('ko-KR')}개 · {initialEntries.length}개 표시 (별칭은 한 항목으로 묶음)</p>
   <section aria-labelledby="entity-list-title">
     <h2 id="entity-list-title">HTML 엔티티 목록</h2>
-    <ul class="entity-list" data-results></ul>
+    <ul class="entity-list" data-results>{initialEntries.map((entry) => <EntityItem entry={entry} />)}</ul>
     <p data-empty hidden>검색 결과가 없습니다. 다른 문자나 이름으로 검색해 보세요.</p>
     <button type="button" data-more hidden>더 보기</button>
   </section>
@@ -20,5 +26,5 @@
     <label for="entity-manual-copy">복사하지 못했어요. 아래 코드를 선택해 직접 복사해 주세요.</label>
     <textarea id="entity-manual-copy" readonly rows="2"></textarea>
   </div>
-  <noscript><p>엔티티 목록 검색과 복사를 사용하려면 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
+  <noscript><p>기본 엔티티 48개는 JavaScript 없이도 볼 수 있습니다. 검색·코드 복사·더 보기는 JavaScript가 필요합니다. 필요한 코드는 직접 선택해 복사하세요.</p></noscript>
 </div>
