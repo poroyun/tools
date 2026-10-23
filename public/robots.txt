@@ -1,0 +1,5 @@
+# Project copy at /tools/robots.txt; does not replace the host-root /robots.txt.
+User-agent: *
+Allow: /
+
+Sitemap: https://poroyun.github.io/tools/sitemap-index.xml
