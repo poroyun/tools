@@ -21,6 +21,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <li>SV·Hue 조정과 스포이드는 현재 Alpha를 유지합니다. 기본 팔레트는 불투명 색상으로 선택됩니다.</li>
         <li>필요한 출력 옆 복사 버튼을 누르세요. 복사에 실패하면 제공되는 코드를 직접 선택하세요.</li>
       </ol>
+      <h3>어떤 색상 형식을 선택하면 되나요?</h3>
+      <p>HEX는 RGB 채널을 16진수로 간결하게 나타내므로 CSS나 디자인 시안에서 색상 값을 전달할 때 편리합니다.
+        RGB는 빨강·초록·파랑의 양을 숫자로 다뤄 채널별 값을 확인하거나 조정할 때 사용합니다.</p>
+      <p>HSL은 색조·채도·밝기로 표현하므로 같은 계열의 색을 조정할 때 유용합니다.
+        HSV는 색조·채도·명도로 표현하며 이 도구의 사각 팔레트에서 채도와 명도를 고를 때 사용합니다.
+        HSL의 밝기와 HSV의 명도는 계산 방식이 달라 같은 숫자라도 같은 색을 뜻하지 않습니다.</p>
+      <h3>계산과 표시 기준</h3>
       <p>표준 sRGB 채널을 기준으로 계산합니다. 내부 계산에는 소수 정밀도를 유지하고 출력 시에만 반올림합니다.
         HEX/RGB는 채널을 8비트 정수로, HEX8의 Alpha도 8비트로 반올림합니다.
         HSL/HSV는 소수점 최대 2자리, Alpha는 최대 4자리로 표시합니다.</p>
@@ -28,12 +35,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
     <section class="colors-faq" aria-labelledby="color-faq-title">
       <h2 id="color-faq-title">자주 묻는 질문</h2>
-      <details><summary>HEX와 HEX8의 차이는 무엇인가요?</summary>
-        <p>HEX는 빨강·초록·파랑 6자리이고, HEX8은 뒤에 Alpha 2자리가 추가됩니다. FF는 불투명, 00은 완전 투명입니다.</p></details>
+      <details><summary>투명도가 필요할 때 HEX8, RGBA, HSLA 중 무엇을 쓰나요?</summary>
+        <p>Alpha는 불투명도를 나타냅니다. 상세 조정에서 0은 완전 투명, 1은 완전 불투명이며, 중간 값은 배경과 겹쳐 보입니다.</p>
+        <p>HEX8은 6자리 RGB 뒤에 Alpha 2자리를 붙인 표기로, 끝의 00은 투명, FF는 불투명입니다.
+          RGBA와 HSLA는 각각 RGB와 HSL에 Alpha 값을 추가한 CSS 표기입니다. 작업 중인 코드에 맞는 형식을 복사하세요.
+          HEX·RGB·HSL 출력에는 Alpha가 포함되지 않습니다.</p></details>
       <details><summary>흰색·회색에서는 Hue를 바꿔도 왜 색이 같나요?</summary>
         <p>채도가 0이거나 명도가 경계에 있으면 Hue가 화면 색상에 영향을 주지 않을 수 있습니다. HSL 조정 값은 유지되므로 채도·명도를 바꾸면 반영됩니다.</p></details>
       <details><summary>스포이드가 보이지 않거나 취소되었어요.</summary>
-        <p>브라우저의 EyeDropper API 지원과 보안 컨텍스트가 필요합니다. 지원되지 않으면 HEX 입력이나 팔레트를 사용하세요. Escape로 취소할 수 있습니다.</p></details>
+        <p>화면 스포이드는 모든 브라우저에서 지원되는 기능이 아닙니다. 이 도구는 EyeDropper API와 HTTPS 등 보안 컨텍스트를 지원하는 환경에서만 버튼을 표시합니다.
+          버튼이 없으면 HEX 입력이나 팔레트를 사용하세요. 선택 중 Escape를 누르면 취소되며 기존 색상이 유지됩니다.</p></details>
       <details><summary>코드 사이에 작은 반올림 차이가 생기는 이유는 무엇인가요?</summary>
         <p>HEX/RGB의 8비트 표현과 HSL/HSV의 소수 표현은 정밀도가 다릅니다. 출력된 값을 다시 입력하면 반올림 차이가 생길 수 있지만, 조정 중 내부 상태는 출력 문자열로 덮어쓰지 않습니다.</p></details>
     </section>

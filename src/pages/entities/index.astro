@@ -23,8 +23,7 @@ import '../../styles/entities.scss';
         <li>같은 문자에 이름이 여러 개면 모든 별칭을 표시합니다. 이름의 대소문자는 구분되므로 표시된 그대로 사용하세요.</li>
         <li>복사가 실패하면 표시된 코드를 직접 선택해 복사하세요. HTTPS 및 브라우저 권한이 필요할 수 있습니다.</li>
       </ol>
-      <p>예를 들어 앰퍼샌드는 <code>&amp;amp;</code>, 작음 기호는 <code>&amp;lt;</code>,
-        저작권 기호는 <code>&amp;copy;</code>로 입력합니다. 다중 코드포인트 문자는 숫자 참조도 여러 개가 이어집니다.</p>
+      <p>다중 코드포인트 문자는 숫자 참조도 여러 개가 이어집니다. 복사한 코드 문자열 전체를 사용하세요.</p>
       <p>목록은 WHATWG HTML Living Standard의 2026-10-15 스냅샷입니다.
         세미콜론이 있는 이름만 표시하며, 같은 코드포인트 조합의 별칭을 한 행으로 묶었습니다.
         한국어 이름은 주요 항목에 직접 보완했으며 나머지는 영문 이름과 한국어 분류를 제공합니다.</p>
@@ -36,6 +35,31 @@ import '../../styles/entities.scss';
         (소스 코드에 포함되는 부분은 <a href="https://github.com/whatwg/html/blob/main/LICENSE">BSD 3-Clause</a>),
         Unicode 이름은 <a href="https://www.unicode.org/license.txt">Unicode License v3</a>에 따릅니다.</p>
       <p><a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/entities/licenses.txt`}>데이터 저작권 및 라이선스 전문</a></p>
+    </section>
+    <section class="entities-help" aria-labelledby="entity-faq-title">
+      <h2 id="entity-faq-title">자주 묻는 질문</h2>
+      <details>
+        <summary>HTML 엔티티는 언제 사용하나요?</summary>
+        <p>HTML 엔티티(문자 참조)는 HTML 코드에서 문자를 다른 표기로 나타내는 방법입니다.
+          특히 태그나 문자 참조의 시작으로 해석될 수 있는 기호를 본문에 그대로 표시할 때 사용합니다.</p>
+        <p><code>&amp;</code>는 <code>&amp;amp;</code>, <code>&lt;</code>는 <code>&amp;lt;</code>,
+          <code>&gt;</code>는 <code>&amp;gt;</code>로 표기할 수 있습니다.
+          예를 들어 화면에 <code>&lt;p&gt;</code>를 글자로 보여 주려면 HTML 소스에는 <code>&amp;lt;p&amp;gt;</code>를 입력합니다.</p>
+      </details>
+      <details>
+        <summary>Named, Decimal, Hex 표기는 어떻게 다른가요?</summary>
+        <p>Named Entity는 문자에 정해진 이름을 사용하고, Decimal과 Hex는 유니코드 코드포인트를 각각 10진수와 16진수로 나타냅니다.
+          예를 들어 저작권 기호 <code>©</code>는 <code>&amp;copy;</code>, <code>&amp;#169;</code>, <code>&amp;#xA9;</code>로 쓸 수 있습니다.</p>
+        <p>이 코드표의 같은 행에 있는 표기들은 같은 문자를 나타냅니다. 작업 중인 HTML 코드의 표기 방식에 맞춰 복사하세요.</p>
+      </details>
+      <details>
+        <summary>특수문자를 그대로 쓰거나 세미콜론을 생략해도 되나요?</summary>
+        <p>UTF-8 HTML에서는 한글이나 © 같은 많은 문자를 직접 쓸 수 있습니다. 다만 본문에서 <code>&lt;</code>나
+          문자 참조로 해석될 수 있는 <code>&amp;</code>는 이스케이프해야 합니다.
+          따옴표로 감싼 속성 값에서는 구분자로 사용한 따옴표도 처리해야 하며, 큰따옴표는 <code>&amp;quot;</code>로 나타낼 수 있습니다.</p>
+        <p>끝의 세미콜론(<code>;</code>)은 문자 참조의 종료를 나타냅니다. 일부 표기는 브라우저가 세미콜론 없이도 처리하지만,
+          뒤에 오는 문자나 속성 문맥에 따라 결과가 달라질 수 있으므로 생략하지 마세요. 이 도구는 세미콜론을 포함한 코드를 제공합니다.</p>
+      </details>
     </section>
   </div>
 </BaseLayout>
