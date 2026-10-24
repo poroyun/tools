@@ -2,6 +2,7 @@
 import '../styles/global.scss';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import AnalyticsConsent from '../components/AnalyticsConsent.astro';
 import pretendardFont from '../assets/fonts/PretendardVariable.woff2?url';
 
 interface Props {
@@ -58,6 +59,7 @@ const jsonLD = JSON.stringify({
   <body>
     <a class="skip-link" href="#main-content">본문 바로가기</a>
     <SiteHeader />
+    <AnalyticsConsent />
     <main id="main-content" class="site-main" tabindex="-1"><slot /></main>
     <SiteFooter />
   </body>

@@ -1,0 +1,47 @@
+@use 'abstracts/variables' as vars;
+@use 'abstracts/mixins';
+
+.analytics-consent {
+  &[hidden] { display: none; }
+  padding-block: 1rem;
+  border-bottom: 1px solid vars.$color-border;
+  background: vars.$color-surface;
+  .analytics-consent__title { margin: 0 0 0.5rem; font-size: 1.125rem; }
+  p { margin: 0 0 0.75rem; font-size: 0.875rem; }
+  .analytics-consent__current { font-size: 0.8125rem; }
+}
+.analytics-consent__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  button {
+    @include mixins.button-size(md);
+    border: 1px solid vars.$color-border;
+    border-radius: 0.5rem;
+    color: vars.$color-text;
+    background: vars.$color-background;
+    cursor: pointer;
+    &[hidden] { display: none; }
+    &:hover { color: vars.$color-accent; background: vars.$color-surface; }
+  }
+}
+.cookie-settings {
+  @include mixins.button-size;
+  border: 1px solid vars.$color-border;
+  border-radius: 0.5rem;
+  color: vars.$color-text;
+  background: vars.$color-surface;
+  cursor: pointer;
+  &[hidden] { display: none; }
+  &:hover { color: vars.$color-accent; }
+}
+.consent-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

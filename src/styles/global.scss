@@ -146,6 +146,13 @@ a.site-nav__item:not([aria-current='page']):hover {
   padding-block: vars.$space-md;
   border-top: 1px solid vars.$color-border;
 
+  > .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
   p {
     margin: 0;
   }

@@ -1,0 +1,21 @@
+---
+import '../styles/analytics-consent.scss';
+---
+<section class="analytics-consent" data-consent-panel aria-labelledby="analytics-consent-title" hidden>
+  <div class="container">
+    <p class="analytics-consent__title" id="analytics-consent-title" tabindex="-1"><strong>분석 쿠키 선택</strong></p>
+    <p>Tools는 이용 현황을 파악하기 위해 Google Analytics 4를 사용합니다.
+      동의하기 전에는 Google 분석 태그를 불러오거나 분석 데이터를 보내지 않습니다.
+      거부해도 모든 도구를 사용할 수 있으며, 푸터의 쿠키 설정에서 언제든 변경할 수 있습니다.</p>
+    <p class="analytics-consent__current" data-consent-current></p>
+    <div class="analytics-consent__actions">
+      <button type="button" data-consent-choice="granted">동의</button>
+      <button type="button" data-consent-choice="denied">거부</button>
+      <button type="button" data-consent-close hidden>변경 없이 닫기</button>
+    </div>
+  </div>
+</section>
+<script>
+  import { initializeConsent } from '../scripts/analytics/browser';
+  initializeConsent(import.meta.env.BASE_URL);
+</script>
