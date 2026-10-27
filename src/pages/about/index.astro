@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<BaseLayout title="사이트 소개 - Tools" description="Tools는 이모지와 텍스트 이모티콘, HTML 엔티티, 색상 선택·변환 도구를 무료로 제공하는 웹 도구 모음입니다." structuredData={{ type: 'AboutPage', name: '사이트 소개' }}>
+  <article class="container info-page">
+    <header>
+      <h1>사이트 소개</h1>
+      <p>Tools는 작업할 때 자주 쓰는 도구를 한곳에서 쉽고 빠르게 이용할 수 있는 무료 웹 도구 모음입니다.</p>
+    </header>
+    <section aria-labelledby="available-tools">
+      <h2 id="available-tools">지금 이용할 수 있는 도구</h2>
+      <ul>
+        <li><a href={`${base}/characters/`}>이모지 및 텍스트 이모티콘</a> — 한글 키워드와 카테고리로 원하는 표현을 찾고 복사할 수 있습니다.</li>
+        <li><a href={`${base}/entities/`}>HTML 엔티티 코드표</a> — 문자나 이름을 검색하고, 이름 표기와 10진수·16진수 코드를 확인하고 복사할 수 있습니다.</li>
+        <li><a href={`${base}/colors/`}>HEX/RGB 색상 도구</a> — 색상을 선택하고 HEX·RGB·HSL·HSV 값으로 변환하거나 필요한 색상 코드를 복사할 수 있습니다.</li>
+      </ul>
+    </section>
+    <section aria-labelledby="next-tools">
+      <h2 id="next-tools">앞으로의 Tools</h2>
+      <p>일상과 작업에 도움이 되는 유용한 도구를 조금씩 추가할 계획입니다.</p>
+      <p>오류를 발견했거나 필요한 기능이 있다면 <a href={`${base}/contact/`}>문의하기</a>에서 알려주세요.</p>
+    </section>
+  </article>
+</BaseLayout>

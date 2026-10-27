@@ -150,7 +150,7 @@ test('first text-panel activation after empty emoji search clears empty state wi
 });
 
 test('all built pages retain unique canonical, OG/Twitter metadata and valid JSON-LD', () => {
-  for (const route of ['', 'characters', 'entities', 'colors']) {
+  for (const route of ['', 'characters', 'entities', 'colors', 'about', 'contact', 'privacy']) {
     const doc = documentFromHTML(readBuild(route));
     const canonical = doc.querySelectorAll('link').filter((node) => node.getAttribute('rel') === 'canonical');
     const expected = `https://poroyun.github.io/tools/${route ? route + '/' : ''}`;
@@ -168,7 +168,13 @@ test('all built pages retain unique canonical, OG/Twitter metadata and valid JSO
     assert.equal(schemas.length, 1);
     const schema = JSON.parse(schemas[0].textContent);
     assert.equal(schema.url, expected); assert.equal(schema.description, description);
-    assert.equal(schema['@type'], route ? 'WebApplication' : 'WebSite');
+    assert.equal(schema['@type'], ({ about: 'AboutPage', contact: 'ContactPage', privacy: 'WebPage' }[route] || (route ? 'WebApplication' : 'WebSite')));
     assert.deepEqual(Object.keys(schema).sort(), ['@context', '@type', 'description', 'name', 'url']);
+    const footer = doc.querySelector('footer');
+    assert.deepEqual(footer.querySelectorAll('a').map((node) => node.getAttribute('href')),
+      ['about', 'contact', 'privacy'].map((path) => `/tools/${path}/`));
+    assert.ok(footer.querySelector('[data-cookie-settings]'));
+    assert.ok(metadata.some((node) => node.getAttribute('name') === 'google-site-verification'
+      && node.getAttribute('content') === 'Dtmf2I2OOJ282y9TESuvOAZINwaIzNX6GmqlOz_bD-I'));
   }
 });

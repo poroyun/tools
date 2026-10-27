@@ -3,13 +3,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { sep } from 'node:path';
 import sax from 'sax';
 import { parse, walkSync } from 'ultrahtml';
 
 const dist = new URL('../dist/', import.meta.url);
 const site = 'https://poroyun.github.io/tools/';
 const namespace = 'http://www.sitemaps.org/schemas/sitemap/0.9';
-const expected = ['', 'characters/', 'entities/', 'colors/'].map((path) => site + path).sort();
+const expected = ['', 'characters/', 'entities/', 'colors/', 'about/', 'contact/', 'privacy/'].map((path) => site + path).sort();
 const read = (path) => readFileSync(new URL(path, dist), 'utf8');
 
 function parseSitemap(xml) {
@@ -57,10 +58,10 @@ function sitemapURLs() {
   return urls;
 }
 
-test('valid sitemap index and child XML contain exactly four unique canonical page URLs', () => {
+test('valid sitemap index and child XML contain exactly seven unique canonical page URLs', () => {
   const urls = sitemapURLs();
-  assert.equal(urls.length, 4);
-  assert.equal(new Set(urls).size, 4);
+  assert.equal(urls.length, 7);
+  assert.equal(new Set(urls).size, 7);
   assert.deepEqual([...urls].sort(), expected);
   for (const url of urls) {
     assert.ok(url.endsWith('/'));
@@ -76,7 +77,7 @@ test('valid sitemap index and child XML contain exactly four unique canonical pa
 test('all built HTML pages are included; JSON, text, scripts and duplicate sitemap.xml are absent', () => {
   const htmlURLs = readdirSync(dist, { recursive: true })
     .filter((path) => path.endsWith('.html'))
-    .map((path) => site + path.replace(/index\.html$/, ''));
+    .map((path) => site + path.split(sep).join('/').replace(/index\.html$/, ''));
   assert.deepEqual(htmlURLs.sort(), expected);
   assert.deepEqual(sitemapURLs().sort(), htmlURLs);
   assert.deepEqual(readdirSync(dist).filter((path) => /^sitemap.*\.xml$/.test(path)).sort(),

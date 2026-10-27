@@ -1,8 +1,18 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const links = [
+  ['about', '사이트 소개'],
+  ['contact', '문의하기'],
+  ['privacy', '개인정보처리방침'],
+];
+---
 <footer class="site-footer">
   <div class="container">
     <p>Tools</p>
+    <nav class="footer-nav" aria-label="사이트 안내">
+      {links.map(([path, label]) => <a href={`${base}/${path}/`} aria-current={Astro.url.pathname.replace(/\/$/, '') === `${base}/${path}` ? 'page' : undefined}>{label}</a>)}
+    </nav>
     <button class="cookie-settings" type="button" data-cookie-settings hidden>쿠키 설정</button>
     <p class="consent-status" data-consent-status role="status" aria-live="polite" aria-atomic="true"></p>
-    <!-- 소개, 개인정보처리방침, 문의 페이지가 준비되면 여기에 링크를 추가합니다. -->
   </div>
 </footer>

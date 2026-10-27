@@ -23,7 +23,9 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "sass": "^1.105.1",
-    "typescript": "^6.0.3"
+    "sass": "^1.106.1",
+    "sax": "^1.6.1",
+    "typescript": "^6.0.3",
+    "ultrahtml": "^1.7.0"
   }
 }

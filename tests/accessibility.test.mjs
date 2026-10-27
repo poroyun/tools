@@ -2,10 +2,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { compile } from 'sass';
 import { documentFromHTML, readBuild } from './helpers/static-dom.mjs';
 
-const routes = ['', 'characters', 'entities', 'colors'];
+const routes = ['', 'characters', 'entities', 'colors', 'about', 'contact', 'privacy'];
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const descendants = (node) => [node, ...node.children.flatMap(descendants)];
 
@@ -52,7 +53,7 @@ test('available home cards omit badges while keeping three destination links', (
 });
 
 test('text items use wrapping flex with 8px padding; Unicode emoji retain their grid', () => {
-  const css = compile(new URL('../src/styles/characters.scss', import.meta.url).pathname).css;
+  const css = compile(fileURLToPath(new URL('../src/styles/characters.scss', import.meta.url))).css;
   assert.match(css, /\.character-grid\s*\{[^}]*display: grid;/);
   assert.match(css, /\.character-grid:not\(\.character-grid--text\)\s*\{[^}]*grid-template-columns: repeat\(auto-fill, minmax\(3rem, 1fr\)\)/);
   assert.match(css, /\.character-grid--text\s*\{[^}]*display: flex;[^}]*flex-wrap: wrap;/);
@@ -87,14 +88,14 @@ test('text and accent color pairs meet contrast thresholds; light borders retain
 
 test('tool controls restore light default borders without changing selection, focus or error cues', () => {
   for (const file of ['characters', 'entities', 'colors']) {
-    const css = compile(new URL(`../src/styles/${file}.scss`, import.meta.url).pathname).css;
+    const css = compile(fileURLToPath(new URL(`../src/styles/${file}.scss`, import.meta.url))).css;
     assert.ok(!css.includes('#838fa3'));
     assert.match(css, /border: 1px solid #dce2ec/);
   }
-  const characters = compile(new URL('../src/styles/characters.scss', import.meta.url).pathname).css;
+  const characters = compile(fileURLToPath(new URL('../src/styles/characters.scss', import.meta.url))).css;
   assert.match(characters, /button\[aria-selected=true\][^{]*\{[^}]*background: #3056d3/);
-  const global = compile(new URL('../src/styles/global.scss', import.meta.url).pathname).css;
+  const global = compile(fileURLToPath(new URL('../src/styles/global.scss', import.meta.url))).css;
   assert.match(global, /:focus-visible\s*\{[^}]*outline: 2px solid #3056d3/);
-  const colors = compile(new URL('../src/styles/colors.scss', import.meta.url).pathname).css;
+  const colors = compile(fileURLToPath(new URL('../src/styles/colors.scss', import.meta.url))).css;
   assert.match(colors, /input\[aria-invalid=true\][^{]*\{[^}]*border-style: dashed;[^}]*border-width: 2px/);
 });

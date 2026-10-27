@@ -91,7 +91,9 @@ export const settle = () => new Promise((resolve) => setTimeout(resolve, 100));
 
 export async function runInitializer(route, document, dependencies, fetch, navigator = {}) {
   let source = readFileSync(new URL(`../../src/scripts/${route}/browser.ts`, import.meta.url), 'utf8');
-  source = source.replace(/^import .*;\n/gm, '')
+  // Git checkouts can use LF or CRLF. Remove the injected static imports in
+  // either case; dynamic import below still resolves the real test dataset.
+  source = source.replace(/^import .*;\r?\n/gm, '')
     .replace("import('../../data/kaomoji/index')", 'Promise.resolve(kaomojiModule)')
     .replaceAll('import.meta.env.BASE_URL', "'/tools'")
     .replace('void initialize();', 'return initialize();');
